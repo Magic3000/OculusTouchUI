@@ -1,10 +1,14 @@
-﻿using System;
+﻿using AdvancedSharpAdbClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,15 +18,61 @@ namespace OculusTouchUI
 {
     public partial class Form1 : Form
     {
+        public static Form1 _instance;
         public Form1()
         {
             InitializeComponent();
+            _instance = this;
             Start();
         }
 
+        private void VibratePower_ValueChanged(object sender, System.EventArgs e)
+        {
+            this.vibratePowerLabel.Text = $"Power: {(Power)vibratePower.Value}";
+        }
+
+        private void VibrateStrength_ValueChanged(object sender, System.EventArgs e)
+        {
+        }
+
+        private void VibrateButton_MouseHover(object sender, System.EventArgs e)
+        {
+            SetVibration(Device.HMD, Power.Low, 255, 0.05f);
+        }
+
+        private static bool isVibrating;
+        private void VibrateButton_Click(object sender, EventArgs e)
+        {
+            isVibrating = !isVibrating;
+            if (isVibrating)
+            {
+                var upd = new Thread(() =>
+                {
+                    while (isVibrating)
+                    {
+                        try { this.Invoke(new Action(() => { SetVibration(Device.HMD, (Power)vibratePower.Value, (byte)vibrateStrength.Value, 0); })); }
+                        catch { }
+
+                        Thread.Sleep(100);
+                    }
+                    try
+                    { this.Invoke(new Action(() => { SetVibration(Device.HMD, 0, 0, 0); })); }
+                    catch { }
+                });
+                upd.IsBackground = true;
+                upd.SetApartmentState(ApartmentState.STA);
+                upd.Start();
+            }
+        }
+
+        private static bool readBattery = true;
         public void Start()
         {
             OculusWrapper.Start(false);
+            if (readBattery)
+            {
+                ADB.StartADB();
+            }
             var update = new Thread(() =>
             {
                 Thread.Sleep(1000);
@@ -92,6 +142,10 @@ namespace OculusTouchUI
                                 touches += "LSRest";
                             if (GetTouchRStickRest())       //little black-circle area under A and B buttons
                                 touches += "RSRest";
+
+
+
+
                             _instance.touchesLabel.Text = touches;
                             _instance.isInHeadset.Text = $"Is in Headset: {IsInHeadset()}";
 
@@ -99,25 +153,35 @@ namespace OculusTouchUI
                             _instance.LHandLabel.Text = $"LHand: {(int)GetLBump()}";
                             _instance.RHand.Value = (int)GetRBump();
                             _instance.RHandLabel.Text = $"RHand: {(int)GetRBump()}";
+
+                            int y = (int)getYaw((int)Device.RTouch);
+                            int p = (int)getPitch((int)Device.RTouch);
+                            int r = (int)getRoll((int)Device.RTouch);
                             _instance.ltYaw.Value = (int)lRot.x;                                //between 0 and 100
                             _instance.ltPitch.Value = (int)lRot.y;
                             _instance.ltRoll.Value = (int)lRot.z;
                             _instance.ltYawLabel.Text = $"Yaw: {(int)lRot.x}";
                             _instance.ltPitchLabel.Text = $"Pitch: {(int)lRot.y}";
                             _instance.ltRollLabel.Text = $"Roll: {(int)lRot.z}";
-                            _instance.rtYaw.Value = (int)rRot.x;
-                            _instance.rtPitch.Value = (int)rRot.y;
-                            _instance.rtRoll.Value = (int)rRot.z;
-                            _instance.rtYawLabel.Text = $"Yaw: {(int)rRot.x}";
-                            _instance.rtPitchLabel.Text = $"Pitch: {(int)rRot.y}";
-                            _instance.rtRollLabel.Text = $"Roll: {(int)rRot.z}";
+                            _instance.rtYaw.Value = y;
+                            _instance.rtPitch.Value = p;
+                            _instance.rtRoll.Value = r;
+                            _instance.rtYawLabel.Text = $"Yaw: {y}";
+                            _instance.rtPitchLabel.Text = $"Pitch: {p}";
+                            _instance.rtRollLabel.Text = $"Roll: {r}";
 
-                            _instance.ltXLabel.Text = $"X: {rPos.x}";                           //required headsed weared (isInHeadset is true) to track what actually launch oculus client
-                            _instance.ltYLabel.Text = $"Y: {rPos.y}";
-                            _instance.ltZLabel.Text = $"Z: {rPos.z}";
+                            _instance.ltXLabel.Text = $"X: {lPos.x}";                           //required headsed weared (isInHeadset is true) to track what actually launch oculus client
+                            _instance.ltYLabel.Text = $"Y: {lPos.y}";
+                            _instance.ltZLabel.Text = $"Z: {lPos.z}";
                             _instance.rtXLabel.Text = $"X: {rPos.x}";
                             _instance.rtYLabel.Text = $"Y: {rPos.y}";
                             _instance.rtZLabel.Text = $"Z: {rPos.z}";
+
+                            _instance.currentAdbDeviceLbl.Text = $"Device: {(ADB.isMeta ? $"Serial: {ADB.deviceSerial} Model: {ADB.deviceModel} CodeName: {ADB.deviceName}" : $"(NotMeta) Model: {ADB.deviceModel} CodeName: {ADB.deviceName} State: {ADB.deviceState}")}";
+                            _instance.batteryLbl.Text = $"Battery {(Sender.fetched ? $"HMD: {Sender.Hbatlevelf} LTouch: {Sender.Lbatlevelf} RTouch: {Sender.Rbatlevelf}" : "N/A")}";
+
+                            if (GetRBumpPressed())
+                                Reset();
                         }));
                     }
                     catch { }

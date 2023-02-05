@@ -244,6 +244,12 @@ namespace OculusTouchUI
             poll();
         }
 
+        public static void Reset()
+        {
+            OculusWrapper.resetFacing((int)Device.LTouch);
+            OculusWrapper.resetFacing((int)Device.RTouch);
+        }
+
         public static void Start(bool startUpdate = true)
         {
             if (isStarted)
@@ -410,6 +416,36 @@ namespace OculusTouchUI
         public static Vector3 GetRTouchRot() => new Vector3(GetRTouchYaw(), GetRTouchPitch(), GetRTouchRoll());
         public static Vector3 GetHMDRot() => new Vector3(GetHMDYaw(), GetHMDPitch(), GetHMDRoll());
 
+        public enum Power
+        {
+            Extreme = 1,          //320hz
+            High = 2,      //160.7hz
+            Medium = 3,          //106hz
+            Low = 4            //80hz
+        }
+        public static void SetVibration(Device controller, Power frequency, byte amplitudeAKAstrength, float lengthInSeconds = 0)
+        {
+            switch (controller)
+            {
+                case Device.LTouch:
+                    setVibration(0, (int)frequency, amplitudeAKAstrength, lengthInSeconds);
+                    break;
+                case Device.RTouch:
+                    setVibration(1, (int)frequency, amplitudeAKAstrength, lengthInSeconds);
+                    break;
+                case Device.HMD:
+                    setVibration(0, (int)frequency, amplitudeAKAstrength, lengthInSeconds);
+                    setVibration(1, (int)frequency, amplitudeAKAstrength, lengthInSeconds);
+                    break;
+                default:
+                    break;
+            }
+        }
+        public static void LRVibrateOff(int frequency = 1, byte amplitude = 0, float length = 0)
+        {
+            LVibrateOff(frequency, amplitude, length);
+            RVibrateOff(frequency, amplitude, length);
+        }
         public static void LVibrateOn(int frequency = 1, byte amplitude = 255, float length = 0) => setVibration(0, frequency, amplitude, length);
         public static void LVibrateOff(int frequency = 1, byte amplitude = 0, float length = 0) => setVibration(0, frequency, amplitude, length);
         public static void RVibrateOn(int frequency = 1, byte amplitude = 255, float length = 0) => setVibration(1, frequency, amplitude, length);

@@ -23,7 +23,7 @@ namespace OculusTouchUI
 
         #region Windows Form Designer generated code
 
-        private void AssignInstance() => _instance = this;
+        //private void AssignInstance() => _instance = this;
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -31,7 +31,6 @@ namespace OculusTouchUI
         /// </summary>
         private void InitializeComponent()
         {
-            AssignInstance();
             this.LTouchXLabel = new System.Windows.Forms.Label();
             this.LTouchYLabel = new System.Windows.Forms.Label();
             this.LTouchX = new System.Windows.Forms.TrackBar();
@@ -73,6 +72,12 @@ namespace OculusTouchUI
             this.ltZLabel = new System.Windows.Forms.Label();
             this.ltYLabel = new System.Windows.Forms.Label();
             this.ltXLabel = new System.Windows.Forms.Label();
+            this.vibrateButton = new System.Windows.Forms.Button();
+            this.vibratePowerLabel = new System.Windows.Forms.Label();
+            this.vibratePower = new System.Windows.Forms.TrackBar();
+            this.vibrateStrength = new System.Windows.Forms.TrackBar();
+            this.batteryLbl = new System.Windows.Forms.Label();
+            this.currentAdbDeviceLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.LTouchX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LTouchY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RTouchY)).BeginInit();
@@ -87,6 +92,8 @@ namespace OculusTouchUI
             ((System.ComponentModel.ISupportInitialize)(this.rtRoll)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rtPitch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rtYaw)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vibratePower)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vibrateStrength)).BeginInit();
             this.SuspendLayout();
             // 
             // LTouchXLabel
@@ -95,7 +102,7 @@ namespace OculusTouchUI
             this.LTouchXLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.LTouchXLabel.Location = new System.Drawing.Point(29, 30);
             this.LTouchXLabel.Name = "LTouchXLabel";
-            this.LTouchXLabel.Size = new System.Drawing.Size(230, 32);
+            this.LTouchXLabel.Size = new System.Drawing.Size(229, 32);
             this.LTouchXLabel.TabIndex = 2;
             this.LTouchXLabel.Text = "LTouch X-Axis: 0";
             // 
@@ -105,7 +112,7 @@ namespace OculusTouchUI
             this.LTouchYLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.LTouchYLabel.Location = new System.Drawing.Point(29, 118);
             this.LTouchYLabel.Name = "LTouchYLabel";
-            this.LTouchYLabel.Size = new System.Drawing.Size(230, 32);
+            this.LTouchYLabel.Size = new System.Drawing.Size(229, 32);
             this.LTouchYLabel.TabIndex = 3;
             this.LTouchYLabel.Text = "LTouch Y-Axis: 0";
             // 
@@ -142,7 +149,7 @@ namespace OculusTouchUI
             this.RTouchYLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.RTouchYLabel.Location = new System.Drawing.Point(311, 118);
             this.RTouchYLabel.Name = "RTouchYLabel";
-            this.RTouchYLabel.Size = new System.Drawing.Size(234, 32);
+            this.RTouchYLabel.Size = new System.Drawing.Size(233, 32);
             this.RTouchYLabel.TabIndex = 8;
             this.RTouchYLabel.Text = "RTouch Y-Axis: 0";
             // 
@@ -152,7 +159,7 @@ namespace OculusTouchUI
             this.RTouchXLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.RTouchXLabel.Location = new System.Drawing.Point(311, 30);
             this.RTouchXLabel.Name = "RTouchXLabel";
-            this.RTouchXLabel.Size = new System.Drawing.Size(234, 32);
+            this.RTouchXLabel.Size = new System.Drawing.Size(233, 32);
             this.RTouchXLabel.TabIndex = 7;
             this.RTouchXLabel.Text = "RTouch X-Axis: 0";
             // 
@@ -179,7 +186,7 @@ namespace OculusTouchUI
             this.RHandLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.RHandLabel.Location = new System.Drawing.Point(311, 299);
             this.RHandLabel.Name = "RHandLabel";
-            this.RHandLabel.Size = new System.Drawing.Size(111, 32);
+            this.RHandLabel.Size = new System.Drawing.Size(110, 32);
             this.RHandLabel.TabIndex = 16;
             this.RHandLabel.Text = "RHand:";
             // 
@@ -189,7 +196,7 @@ namespace OculusTouchUI
             this.RTriggerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.RTriggerLabel.Location = new System.Drawing.Point(311, 211);
             this.RTriggerLabel.Name = "RTriggerLabel";
-            this.RTriggerLabel.Size = new System.Drawing.Size(156, 32);
+            this.RTriggerLabel.Size = new System.Drawing.Size(155, 32);
             this.RTriggerLabel.TabIndex = 15;
             this.RTriggerLabel.Text = "RTrigger: 0";
             // 
@@ -215,7 +222,7 @@ namespace OculusTouchUI
             this.LHandLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.LHandLabel.Location = new System.Drawing.Point(29, 299);
             this.LHandLabel.Name = "LHandLabel";
-            this.LHandLabel.Size = new System.Drawing.Size(130, 32);
+            this.LHandLabel.Size = new System.Drawing.Size(129, 32);
             this.LHandLabel.TabIndex = 12;
             this.LHandLabel.Text = "LHand: 0";
             // 
@@ -225,7 +232,7 @@ namespace OculusTouchUI
             this.LTriggerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.LTriggerLabel.Location = new System.Drawing.Point(29, 211);
             this.LTriggerLabel.Name = "LTriggerLabel";
-            this.LTriggerLabel.Size = new System.Drawing.Size(152, 32);
+            this.LTriggerLabel.Size = new System.Drawing.Size(151, 32);
             this.LTriggerLabel.TabIndex = 11;
             this.LTriggerLabel.Text = "LTrigger: 0";
             // 
@@ -243,7 +250,7 @@ namespace OculusTouchUI
             this.pressedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.pressedLabel.Location = new System.Drawing.Point(29, 390);
             this.pressedLabel.Name = "pressedLabel";
-            this.pressedLabel.Size = new System.Drawing.Size(120, 32);
+            this.pressedLabel.Size = new System.Drawing.Size(119, 32);
             this.pressedLabel.TabIndex = 18;
             this.pressedLabel.Text = "Buttons:";
             // 
@@ -253,7 +260,7 @@ namespace OculusTouchUI
             this.touchesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.touchesLabel.Location = new System.Drawing.Point(29, 435);
             this.touchesLabel.Name = "touchesLabel";
-            this.touchesLabel.Size = new System.Drawing.Size(132, 32);
+            this.touchesLabel.Size = new System.Drawing.Size(131, 32);
             this.touchesLabel.TabIndex = 19;
             this.touchesLabel.Text = "Touches:";
             // 
@@ -263,7 +270,7 @@ namespace OculusTouchUI
             this.isInHeadset.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.isInHeadset.Location = new System.Drawing.Point(29, 481);
             this.isInHeadset.Name = "isInHeadset";
-            this.isInHeadset.Size = new System.Drawing.Size(264, 32);
+            this.isInHeadset.Size = new System.Drawing.Size(263, 32);
             this.isInHeadset.TabIndex = 20;
             this.isInHeadset.Text = "Is in Headset: False";
             // 
@@ -273,7 +280,7 @@ namespace OculusTouchUI
             this.ltRotLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltRotLabel.Location = new System.Drawing.Point(29, 534);
             this.ltRotLabel.Name = "ltRotLabel";
-            this.ltRotLabel.Size = new System.Drawing.Size(252, 32);
+            this.ltRotLabel.Size = new System.Drawing.Size(251, 32);
             this.ltRotLabel.TabIndex = 21;
             this.ltRotLabel.Text = "Left Touch rotation";
             // 
@@ -283,7 +290,7 @@ namespace OculusTouchUI
             this.rtRotLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtRotLabel.Location = new System.Drawing.Point(311, 534);
             this.rtRotLabel.Name = "rtRotLabel";
-            this.rtRotLabel.Size = new System.Drawing.Size(271, 32);
+            this.rtRotLabel.Size = new System.Drawing.Size(270, 32);
             this.rtRotLabel.TabIndex = 22;
             this.rtRotLabel.Text = "Right Touch rotation";
             // 
@@ -293,7 +300,7 @@ namespace OculusTouchUI
             this.rtPosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtPosLabel.Location = new System.Drawing.Point(311, 875);
             this.rtPosLabel.Name = "rtPosLabel";
-            this.rtPosLabel.Size = new System.Drawing.Size(275, 32);
+            this.rtPosLabel.Size = new System.Drawing.Size(274, 32);
             this.rtPosLabel.TabIndex = 24;
             this.rtPosLabel.Text = "Right Touch position";
             // 
@@ -303,7 +310,7 @@ namespace OculusTouchUI
             this.ltPosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltPosLabel.Location = new System.Drawing.Point(29, 875);
             this.ltPosLabel.Name = "ltPosLabel";
-            this.ltPosLabel.Size = new System.Drawing.Size(256, 32);
+            this.ltPosLabel.Size = new System.Drawing.Size(255, 32);
             this.ltPosLabel.TabIndex = 23;
             this.ltPosLabel.Text = "Left Touch position";
             // 
@@ -322,7 +329,7 @@ namespace OculusTouchUI
             this.ltYawLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltYawLabel.Location = new System.Drawing.Point(29, 585);
             this.ltYawLabel.Name = "ltYawLabel";
-            this.ltYawLabel.Size = new System.Drawing.Size(78, 32);
+            this.ltYawLabel.Size = new System.Drawing.Size(77, 32);
             this.ltYawLabel.TabIndex = 27;
             this.ltYawLabel.Text = "Yaw:";
             // 
@@ -332,7 +339,7 @@ namespace OculusTouchUI
             this.ltPitchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltPitchLabel.Location = new System.Drawing.Point(29, 660);
             this.ltPitchLabel.Name = "ltPitchLabel";
-            this.ltPitchLabel.Size = new System.Drawing.Size(87, 32);
+            this.ltPitchLabel.Size = new System.Drawing.Size(86, 32);
             this.ltPitchLabel.TabIndex = 29;
             this.ltPitchLabel.Text = "Pitch:";
             // 
@@ -351,7 +358,7 @@ namespace OculusTouchUI
             this.ltRollLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltRollLabel.Location = new System.Drawing.Point(29, 724);
             this.ltRollLabel.Name = "ltRollLabel";
-            this.ltRollLabel.Size = new System.Drawing.Size(73, 32);
+            this.ltRollLabel.Size = new System.Drawing.Size(72, 32);
             this.ltRollLabel.TabIndex = 31;
             this.ltRollLabel.Text = "Roll:";
             // 
@@ -370,14 +377,15 @@ namespace OculusTouchUI
             this.rtRollLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtRollLabel.Location = new System.Drawing.Point(311, 724);
             this.rtRollLabel.Name = "rtRollLabel";
-            this.rtRollLabel.Size = new System.Drawing.Size(73, 32);
+            this.rtRollLabel.Size = new System.Drawing.Size(72, 32);
             this.rtRollLabel.TabIndex = 37;
             this.rtRollLabel.Text = "Roll:";
             // 
             // rtRoll
             // 
             this.rtRoll.Location = new System.Drawing.Point(317, 759);
-            this.rtRoll.Maximum = 100;
+            this.rtRoll.Maximum = 180;
+            this.rtRoll.Minimum = -180;
             this.rtRoll.Name = "rtRoll";
             this.rtRoll.Size = new System.Drawing.Size(191, 69);
             this.rtRoll.TabIndex = 36;
@@ -389,14 +397,15 @@ namespace OculusTouchUI
             this.rtPitchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtPitchLabel.Location = new System.Drawing.Point(311, 660);
             this.rtPitchLabel.Name = "rtPitchLabel";
-            this.rtPitchLabel.Size = new System.Drawing.Size(87, 32);
+            this.rtPitchLabel.Size = new System.Drawing.Size(86, 32);
             this.rtPitchLabel.TabIndex = 35;
             this.rtPitchLabel.Text = "Pitch:";
             // 
             // rtPitch
             // 
             this.rtPitch.Location = new System.Drawing.Point(317, 695);
-            this.rtPitch.Maximum = 100;
+            this.rtPitch.Maximum = 90;
+            this.rtPitch.Minimum = -90;
             this.rtPitch.Name = "rtPitch";
             this.rtPitch.Size = new System.Drawing.Size(191, 69);
             this.rtPitch.TabIndex = 34;
@@ -408,14 +417,15 @@ namespace OculusTouchUI
             this.rtYawLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtYawLabel.Location = new System.Drawing.Point(311, 585);
             this.rtYawLabel.Name = "rtYawLabel";
-            this.rtYawLabel.Size = new System.Drawing.Size(78, 32);
+            this.rtYawLabel.Size = new System.Drawing.Size(77, 32);
             this.rtYawLabel.TabIndex = 33;
             this.rtYawLabel.Text = "Yaw:";
             // 
             // rtYaw
             // 
             this.rtYaw.Location = new System.Drawing.Point(317, 620);
-            this.rtYaw.Maximum = 100;
+            this.rtYaw.Maximum = 180;
+            this.rtYaw.Minimum = -180;
             this.rtYaw.Name = "rtYaw";
             this.rtYaw.Size = new System.Drawing.Size(191, 69);
             this.rtYaw.TabIndex = 32;
@@ -427,7 +437,7 @@ namespace OculusTouchUI
             this.rtZLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtZLabel.Location = new System.Drawing.Point(311, 1065);
             this.rtZLabel.Name = "rtZLabel";
-            this.rtZLabel.Size = new System.Drawing.Size(40, 32);
+            this.rtZLabel.Size = new System.Drawing.Size(39, 32);
             this.rtZLabel.TabIndex = 49;
             this.rtZLabel.Text = "Z:";
             // 
@@ -437,7 +447,7 @@ namespace OculusTouchUI
             this.rtYLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtYLabel.Location = new System.Drawing.Point(311, 1001);
             this.rtYLabel.Name = "rtYLabel";
-            this.rtYLabel.Size = new System.Drawing.Size(42, 32);
+            this.rtYLabel.Size = new System.Drawing.Size(41, 32);
             this.rtYLabel.TabIndex = 47;
             this.rtYLabel.Text = "Y:";
             // 
@@ -447,7 +457,7 @@ namespace OculusTouchUI
             this.rtXLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.rtXLabel.Location = new System.Drawing.Point(311, 926);
             this.rtXLabel.Name = "rtXLabel";
-            this.rtXLabel.Size = new System.Drawing.Size(42, 32);
+            this.rtXLabel.Size = new System.Drawing.Size(41, 32);
             this.rtXLabel.TabIndex = 45;
             this.rtXLabel.Text = "X:";
             // 
@@ -457,7 +467,7 @@ namespace OculusTouchUI
             this.ltZLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltZLabel.Location = new System.Drawing.Point(29, 1065);
             this.ltZLabel.Name = "ltZLabel";
-            this.ltZLabel.Size = new System.Drawing.Size(40, 32);
+            this.ltZLabel.Size = new System.Drawing.Size(39, 32);
             this.ltZLabel.TabIndex = 43;
             this.ltZLabel.Text = "Z:";
             // 
@@ -467,7 +477,7 @@ namespace OculusTouchUI
             this.ltYLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltYLabel.Location = new System.Drawing.Point(29, 1001);
             this.ltYLabel.Name = "ltYLabel";
-            this.ltYLabel.Size = new System.Drawing.Size(42, 32);
+            this.ltYLabel.Size = new System.Drawing.Size(41, 32);
             this.ltYLabel.TabIndex = 41;
             this.ltYLabel.Text = "Y:";
             // 
@@ -477,15 +487,78 @@ namespace OculusTouchUI
             this.ltXLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
             this.ltXLabel.Location = new System.Drawing.Point(29, 926);
             this.ltXLabel.Name = "ltXLabel";
-            this.ltXLabel.Size = new System.Drawing.Size(42, 32);
+            this.ltXLabel.Size = new System.Drawing.Size(41, 32);
             this.ltXLabel.TabIndex = 39;
             this.ltXLabel.Text = "X:";
+            // 
+            // vibrateButton
+            // 
+            this.vibrateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.vibrateButton.Location = new System.Drawing.Point(600, 50);
+            this.vibrateButton.Name = "vibrateButton";
+            this.vibrateButton.Size = new System.Drawing.Size(151, 42);
+            this.vibrateButton.TabIndex = 5;
+            this.vibrateButton.Text = "Vibrate";
+            this.vibrateButton.UseCompatibleTextRendering = true;
+            this.vibrateButton.UseVisualStyleBackColor = true;
+            this.vibrateButton.Click += new System.EventHandler(this.VibrateButton_Click);
+            // 
+            // vibratePowerLabel
+            // 
+            this.vibratePowerLabel.AutoSize = true;
+            this.vibratePowerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            this.vibratePowerLabel.Location = new System.Drawing.Point(580, 100);
+            this.vibratePowerLabel.Name = "vibratePowerLabel";
+            this.vibratePowerLabel.Size = new System.Drawing.Size(214, 32);
+            this.vibratePowerLabel.TabIndex = 39;
+            this.vibratePowerLabel.Text = "Power: Extreme";
+            // 
+            // vibratePower
+            // 
+            this.vibratePower.Location = new System.Drawing.Point(580, 150);
+            this.vibratePower.Maximum = 4;
+            this.vibratePower.Minimum = 1;
+            this.vibratePower.Name = "vibratePower";
+            this.vibratePower.Size = new System.Drawing.Size(191, 69);
+            this.vibratePower.TabIndex = 36;
+            this.vibratePower.Value = 1;
+            // 
+            // vibrateStrength
+            // 
+            this.vibrateStrength.Location = new System.Drawing.Point(580, 225);
+            this.vibrateStrength.Maximum = 255;
+            this.vibrateStrength.Name = "vibrateStrength";
+            this.vibrateStrength.Size = new System.Drawing.Size(191, 69);
+            this.vibrateStrength.TabIndex = 36;
+            this.vibrateStrength.Value = 255;
+            // 
+            // batteryLbl
+            // 
+            this.batteryLbl.AutoSize = true;
+            this.batteryLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            this.batteryLbl.Location = new System.Drawing.Point(29, 1163);
+            this.batteryLbl.Name = "batteryLbl";
+            this.batteryLbl.Size = new System.Drawing.Size(112, 32);
+            this.batteryLbl.TabIndex = 50;
+            this.batteryLbl.Text = "Battery:";
+            // 
+            // currentAdbDeviceLbl
+            // 
+            this.currentAdbDeviceLbl.AutoSize = true;
+            this.currentAdbDeviceLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            this.currentAdbDeviceLbl.Location = new System.Drawing.Point(29, 1114);
+            this.currentAdbDeviceLbl.Name = "currentAdbDeviceLbl";
+            this.currentAdbDeviceLbl.Size = new System.Drawing.Size(116, 32);
+            this.currentAdbDeviceLbl.TabIndex = 51;
+            this.currentAdbDeviceLbl.Text = "Device: ";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 1264);
+            this.Controls.Add(this.currentAdbDeviceLbl);
+            this.Controls.Add(this.batteryLbl);
             this.Controls.Add(this.rtZLabel);
             this.Controls.Add(this.rtYLabel);
             this.Controls.Add(this.rtXLabel);
@@ -527,6 +600,10 @@ namespace OculusTouchUI
             this.Controls.Add(this.LTouchYLabel);
             this.Controls.Add(this.LTouchXLabel);
             this.Controls.Add(this.LTouchX);
+            this.Controls.Add(this.vibrateButton);
+            this.Controls.Add(this.vibratePowerLabel);
+            this.Controls.Add(this.vibratePower);
+            this.Controls.Add(this.vibrateStrength);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.LTouchX)).EndInit();
@@ -543,6 +620,8 @@ namespace OculusTouchUI
             ((System.ComponentModel.ISupportInitialize)(this.rtRoll)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rtPitch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rtYaw)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vibratePower)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vibrateStrength)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -550,7 +629,7 @@ namespace OculusTouchUI
 
         #endregion
 
-        public static Form1 _instance;
+        //public static Form1 _instance;
 
         public System.Windows.Forms.TrackBar LTouchX;
         public System.Windows.Forms.TrackBar LTouchY;
@@ -593,6 +672,12 @@ namespace OculusTouchUI
         private System.Windows.Forms.Label ltZLabel;
         private System.Windows.Forms.Label ltYLabel;
         private System.Windows.Forms.Label ltXLabel;
+        private System.Windows.Forms.Button vibrateButton;
+        private System.Windows.Forms.Label vibratePowerLabel;
+        private System.Windows.Forms.TrackBar vibratePower;
+        private System.Windows.Forms.TrackBar vibrateStrength;
+        private System.Windows.Forms.Label batteryLbl;
+        private System.Windows.Forms.Label currentAdbDeviceLbl;
     }
 }
 
