@@ -250,6 +250,7 @@ namespace OculusTouchUI
             OculusWrapper.resetFacing((int)Device.RTouch);
         }
 
+        public static bool firstFail = false;
         public static void Start(bool startUpdate = true)
         {
             if (isStarted)
@@ -257,7 +258,11 @@ namespace OculusTouchUI
             isStarted = true;
             if (OculusWrapper.initOculus() != 1)
             {
-                MessageBox.Show("Failed to InitOculus");
+                if (!firstFail)
+                {
+                    firstFail = true;
+                    MessageBox.Show("Failed to InitOculus");
+                }
                 isStarted = false;
             }
             OculusWrapper.poll();

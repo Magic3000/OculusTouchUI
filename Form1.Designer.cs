@@ -78,6 +78,7 @@ namespace OculusTouchUI
             this.vibrateStrength = new System.Windows.Forms.TrackBar();
             this.batteryLbl = new System.Windows.Forms.Label();
             this.currentAdbDeviceLbl = new System.Windows.Forms.Label();
+            this.trackersLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.LTouchX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LTouchY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RTouchY)).BeginInit();
@@ -552,11 +553,22 @@ namespace OculusTouchUI
             this.currentAdbDeviceLbl.TabIndex = 51;
             this.currentAdbDeviceLbl.Text = "Device: ";
             // 
+            // trackersLbl
+            // 
+            this.trackersLbl.AutoSize = true;
+            this.trackersLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            this.trackersLbl.Location = new System.Drawing.Point(29, 1207);
+            this.trackersLbl.Name = "trackersLbl";
+            this.trackersLbl.Size = new System.Drawing.Size(131, 32);
+            this.trackersLbl.TabIndex = 52;
+            this.trackersLbl.Text = "Trackers:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 1264);
+            this.Controls.Add(this.trackersLbl);
             this.Controls.Add(this.currentAdbDeviceLbl);
             this.Controls.Add(this.batteryLbl);
             this.Controls.Add(this.rtZLabel);
@@ -606,6 +618,7 @@ namespace OculusTouchUI
             this.Controls.Add(this.vibrateStrength);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.LTouchX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LTouchY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RTouchY)).EndInit();
@@ -678,6 +691,7 @@ namespace OculusTouchUI
         private System.Windows.Forms.TrackBar vibrateStrength;
         private System.Windows.Forms.Label batteryLbl;
         private System.Windows.Forms.Label currentAdbDeviceLbl;
+        private System.Windows.Forms.Label trackersLbl;
     }
 }
 

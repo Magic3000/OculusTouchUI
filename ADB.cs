@@ -13,77 +13,37 @@ using System.Windows.Forms;
 using static OculusTouchUI.OculusWrapper;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+/*using VRCOSC.OpenVR;
+using VRCOSC.OpenVR.Metadata;
+using Valve.VR;
+using VRCOSC.OpenVR.Device;*/
 
 namespace OculusTouchUI
 {
-    static class Sender
+    /*internal class OVRDispatcher
     {
-        public static float Hbatlevelf = 0f;
-        public static float Rbatlevelf = 0f;
-        public static float Lbatlevelf = 0f;
-        public static bool fetched = false;
-        public static async void Run()
+        private static OVRClient ovrClient;
+        public static void Initialize()
         {
-            await questwd();
-        }
-
-        public static async Task questwd()
-        {
-            while (true)
+            if (ovrClient != null)
+                return;
+            ovrClient = new OVRClient(new OVRMetadata
             {
-                try
-                {
-                    int Hbatlevelint = 0;
-                    int Rbatlevelint = 0;
-                    int Lbatlevelint = 0;
-
-                    ConsoleOutputReceiver Hbat_receiver = new ConsoleOutputReceiver();
-                    ADB.client.ExecuteRemoteCommand("dumpsys CompanionService | grep Battery", ADB.device, Hbat_receiver);
-                    ConsoleOutputReceiver Rbat_receiver = new ConsoleOutputReceiver();
-                    ADB.client.ExecuteRemoteCommand("dumpsys OVRRemoteService | grep Right", ADB.device, Rbat_receiver);
-                    ConsoleOutputReceiver Lbat_receiver = new ConsoleOutputReceiver();
-                    ADB.client.ExecuteRemoteCommand("dumpsys OVRRemoteService | grep Left", ADB.device, Lbat_receiver); ;
-
-                    var Hbat_match = Regex.Match(Hbat_receiver.ToString(), @"\d+", RegexOptions.RightToLeft);
-                    var Rbat_match = Regex.Match(Rbat_receiver.ToString(), @"\d+", RegexOptions.RightToLeft);
-                    var Lbat_match = Regex.Match(Lbat_receiver.ToString(), @"\d+", RegexOptions.RightToLeft);
-
-                    Hbatlevelint = int.Parse(Hbat_match.Value);
-                    Rbatlevelint = int.Parse(Rbat_match.Value);
-                    Lbatlevelint = int.Parse(Lbat_match.Value);
-                    Hbatlevelf = Hbatlevelint;
-                    Rbatlevelf = Rbatlevelint;
-                    Lbatlevelf = Lbatlevelint;
-                    fetched = true;
-
-                    if (Hbatlevelf < 15)
-                    {
-                        //MessageBox.Show("Headset is discharged, disabled or not connected");
-                    }
-                    if (Rbatlevelf < 15)
-                    {
-                        //MessageBox.Show("Right controller is discharged, disabled or not connected");
-                    }
-                    if (Lbatlevelf < 15)
-                    {
-                        //MessageBox.Show("Left controller is discharged, disabled or not connected");
-                    }
-                    Thread.Sleep(3000);
-
-                }
-                catch (AdbException)
-                {
-                    Hbatlevelf = Rbatlevelf = Lbatlevelf = 0f;
-                    fetched = false;
-                    //Form1.currentBattery = "Error: connection to the headset is lost!";
-                    Thread.Sleep(3000);
-                }
-            }
-
-
+                ApplicationType = EVRApplicationType.VRApplication_Background,
+                ApplicationManifest = string.Empty,
+                ActionManifest = string.Empty
+            });
+            OVRHelper.OnError += m => Console.WriteLine($"OpenVR Exception: {m}");
+            ovrClient.Init();
+            //ovrclient.OnShutdown += () => Console.WriteLine($"OpenVR Shutdown");
         }
-    }
-    internal class ADB
+        public static IEnumerable<Tracker> GetTrackers()
+        {
+            ovrClient.Update();
+            return ovrClient.Trackers.Where(x => x.IsConnected);
+        }
+    }*/
+    internal static class ADB
     {
         static public AdbClient client;
         static public DeviceData device;
@@ -91,8 +51,14 @@ namespace OculusTouchUI
         public static string deviceModel;
         public static string deviceName;
         public static DeviceState deviceState;
-        public static bool isMeta;
         public static bool isConnected;
+        public static bool wirelessConnection;
+
+
+        public static string headsetBattery = "N/A";
+        public static string rTouchBattery = "N/A";
+        public static string lTouchBattery = "N/A";
+        public static bool batteryFetched = false;
 
         public static void StartADB()
         {
@@ -117,65 +83,113 @@ namespace OculusTouchUI
                     StartServerResult result = server.StartServer(@"platform-tools\adb.exe", false);
                     if (result != StartServerResult.Started)
                     {
-                        MessageBox.Show("Can't start adb server, please restart app and try again");
+                        MessageBox.Show($"Can't start adb server, please restart app and try again {result}");
                     }
 
                 }
-                catch (WebException)
+                catch (WebException wExc)
                 {
-                    MessageBox.Show("Unable to download ADB from Google servers, try again or download files manually https://developer.android.com/studio/releases/platform-tools, press any key to exit");
-
+                    MessageBox.Show($"Unable to download ADB from Google servers, try again or download files manually https://developer.android.com/studio/releases/platform-tools, press any key to exit\n{wExc.Message}");
                 }
-
             }
             else
             {
                 MessageBox.Show("ADB server is already running, no checks are required");
             }
-
             client = new AdbClient();
-            client.Connect("127.0.0.1:62001");
-            device = client.GetDevices().FirstOrDefault();
-            try
+            while (!isConnected)
             {
-
-                if (device == null)
+                client.Connect("127.0.0.1:62001");
+                var devices = client.GetDevices();
+                if (devices.Count() == 0)
                 {
-                    isConnected = false;
-                    //MessageBox.Show("No devices found, please restart app and try again");
-                    return;
+                    var fileName = $"deviceIp.txt";
+                    if (File.Exists(fileName))
+                    {
+                        //192.168.2.102
+                        var diviceIp = File.ReadAllText(fileName);
+                        if (diviceIp.Split('.').Count() == 4)
+                        {
+                            client.Connect($"{diviceIp}:5555");
+                            devices = client.GetDevices();
+                        }
+                    }
+                    else
+                        MessageBox.Show("Please create deviceIp.txt id current program directory with headset local-IP");
                 }
-                if (device.Name != "hollywood" && device.Name != "vr_monterey" && device.Name != "monterey" && device.Name != "seacliff")
+                device = devices.First();
+                if (device.Model == "Quest_2")
                 {
-                    deviceSerial = device.Serial;
-                    deviceModel = device.Model;
-                    deviceState = device.State;
-                    isMeta = false;
-                    isConnected = true;
-                    //Form1.currentDevice = $"Not meta-device found: Model: {device.Model} Codename: {device.Name} State: {device.State}";
-                    //MessageBox.Show($"Not meta-device found: \nModel: {device.Model}\nCodename: {device.Name} \nState: {device.State}");
-                }
-                if (device != null)
-                {
-                    deviceSerial = device.Serial;
-                    deviceModel = device.Model;
-                    deviceName = device.Name;
-                    isMeta = isConnected = true;
-                    //Form1.currentDevice = $"Serial or IP: {device.Serial} Model: {device.Model} Codename: {device.Name}";
-                    //MessageBox.Show($"Selecting device:\nSerial or IP: {device.Serial}\nModel: {device.Model}\nCodename: {device.Name}");
+                    try
+                    {
+                        deviceSerial = device.Serial;
+                        deviceModel = device.Model;
+                        deviceName = device.Name;
+                        deviceState = device.State;
+                        if (device.Serial.Contains('.') && device.Serial.Split('.').Count() == 4)
+                            wirelessConnection = true;
+                        isConnected = true;
+                        MessageBox.Show($"Successfully connected via {(wirelessConnection ? "Wi-Fi" : "Usb")} to {deviceModel} ({deviceName}) [{deviceSerial}] state: {deviceState}");
+                    }
+                    catch (AdbException adbExc)
+                    {
+                        MessageBox.Show($"Error connecting to headset {adbExc.Message}\nTrying again in 3 seconds...");
+                        Thread.Sleep(3000);
+                    }
                 }
             }
-            catch (AdbException)
-            {
-                isConnected = false;
-                MessageBox.Show("Error: connection to the headset is lost!");
-                Thread.Sleep(3000);
-            }
 
-            var tasks = new[]
+            Thread batteryUpdater = new Thread(() =>
             {
-                Task.Factory.StartNew(() => Sender.Run(), TaskCreationOptions.LongRunning),
-            };
+                int Hbatlevelint = 0;
+                int Rbatlevelint = 0;
+                int Lbatlevelint = 0;
+                while (true)
+                {
+                    try
+                    {
+
+                        ConsoleOutputReceiver Hbat_receiver = new ConsoleOutputReceiver();
+                        ADB.client.ExecuteRemoteCommand("dumpsys CompanionService | grep Battery", ADB.device, Hbat_receiver);
+                        ConsoleOutputReceiver Lbat_receiver = new ConsoleOutputReceiver();
+                        ADB.client.ExecuteRemoteCommand("dumpsys OVRRemoteService | grep Left", ADB.device, Lbat_receiver);
+                        ConsoleOutputReceiver Rbat_receiver = new ConsoleOutputReceiver();
+                        ADB.client.ExecuteRemoteCommand("dumpsys OVRRemoteService | grep Right", ADB.device, Rbat_receiver);
+
+                        var Hbat_match = Regex.Match(Hbat_receiver.ToString(), @"\d+", RegexOptions.RightToLeft);
+                        var Lbat_match = Regex.Match(Lbat_receiver.ToString(), @"\d+", RegexOptions.RightToLeft);
+                        var Rbat_match = Regex.Match(Rbat_receiver.ToString(), @"\d+", RegexOptions.RightToLeft);
+
+                        try
+                        {
+                            Hbatlevelint = int.Parse(Hbat_match.Value);
+                            Lbatlevelint = int.Parse(Lbat_match.Value);
+                            Rbatlevelint = int.Parse(Rbat_match.Value);
+                            headsetBattery = Hbatlevelint.ToString() + "%";
+                            lTouchBattery = Lbatlevelint.ToString() + "%";
+                            rTouchBattery = Rbatlevelint.ToString() + "%";
+                        }
+                        catch
+                        {
+                            headsetBattery = Hbat_match.Value;
+                            lTouchBattery = Lbat_match.Value;
+                            rTouchBattery = Rbat_match.Value;
+                        }
+
+                        batteryFetched = true;
+                        Thread.Sleep(3000);
+
+                    }
+                    catch (AdbException)
+                    {
+                        headsetBattery = lTouchBattery = rTouchBattery = "N/A";
+                        batteryFetched = false;
+                        Thread.Sleep(3000);
+                    }
+                }
+            });
+            batteryUpdater.IsBackground = true;
+            batteryUpdater.Start();
         }
     }
 }

@@ -177,9 +177,11 @@ namespace OculusTouchUI
                             _instance.rtYLabel.Text = $"Y: {rPos.y}";
                             _instance.rtZLabel.Text = $"Z: {rPos.z}";
 
-                            _instance.currentAdbDeviceLbl.Text = $"Device: {(ADB.isMeta ? $"Serial: {ADB.deviceSerial} Model: {ADB.deviceModel} CodeName: {ADB.deviceName}" : $"(NotMeta) Model: {ADB.deviceModel} CodeName: {ADB.deviceName} State: {ADB.deviceState}")}";
-                            _instance.batteryLbl.Text = $"Battery {(Sender.fetched ? $"HMD: {Sender.Hbatlevelf} LTouch: {Sender.Lbatlevelf} RTouch: {Sender.Rbatlevelf}" : "N/A")}";
-
+                            if (readBattery)
+                            {
+                                _instance.currentAdbDeviceLbl.Text = $"Device: [{(ADB.wirelessConnection ? "Wi-Fi" : "Usb")}] {ADB.deviceModel} ({ADB.deviceName}) [{ADB.deviceSerial}] state: {ADB.deviceState}";
+                                _instance.batteryLbl.Text = $"Battery {(ADB.batteryFetched ? $"HMD: {ADB.headsetBattery} LTouch: {ADB.lTouchBattery} RTouch: {ADB.rTouchBattery}" : "N/A")}";
+                            }
                             if (GetRBumpPressed())
                                 Reset();
                         }));
@@ -191,6 +193,12 @@ namespace OculusTouchUI
             update.IsBackground = true;
             update.SetApartmentState(ApartmentState.STA);
             update.Start();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            /*if (readTrackers)
+                Valve.VR.OpenVR.Shutdown();*/
         }
     }
 }
